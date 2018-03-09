@@ -1,4 +1,4 @@
-# Module outputs
+# Module outputs / return values
 
 output "autoscaling_name_map" {
   value = {

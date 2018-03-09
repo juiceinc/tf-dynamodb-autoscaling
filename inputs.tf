@@ -1,4 +1,4 @@
-# Module Input
+# Module Input / parameters
 
 variable "table_name" {}
 
