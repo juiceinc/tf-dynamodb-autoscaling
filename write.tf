@@ -7,7 +7,7 @@ resource "aws_appautoscaling_target" "dynamodb_write" {
   max_capacity = "${var.write_max}"
 
   service_namespace  = "${local.namespace}"
-  scalable_dimension = "${local.namespace}:${local.type}:WriteCapacityUnits"
+  scalable_dimension = "${local.namespace}:${local.type}:${local.resource_name["write"]}"
 
   role_arn = "${data.aws_iam_role.dynamodb_autoscale_role.arn}"
 }
@@ -20,7 +20,7 @@ resource "aws_appautoscaling_policy" "dynamodb_write" {
   service_namespace  = "${aws_appautoscaling_target.dynamodb_write.service_namespace}"
   scalable_dimension = "${aws_appautoscaling_target.dynamodb_write.scalable_dimension}"
 
-  policy_type = "TargetTrackingScaling"
+  policy_type = "${local.policy_type}"
 
   target_tracking_scaling_policy_configuration {
     predefined_metric_specification {

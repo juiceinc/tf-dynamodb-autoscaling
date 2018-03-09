@@ -9,10 +9,17 @@ locals {
   namespace = "dynamodb"
   type      = "${local.is_table ? "table" : "index"}"
 
+  resource_name = {
+    read = "ReadCapacityUnits"
+    write = "WriteCapacityUnits"
+  }
+
   metric_name = {
     read  = "DynamoDBReadCapacityUtilization"
     write = "DynamoDBWriteCapacityUtilization"
   }
+
+  policy_type = "TargetTrackingScaling"
 
   service_role = "AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
 }

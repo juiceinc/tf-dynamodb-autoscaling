@@ -7,7 +7,7 @@ resource "aws_appautoscaling_target" "dynamodb_read" {
   max_capacity = "${var.read_max}"
 
   service_namespace  = "${local.namespace}"
-  scalable_dimension = "${local.namespace}:${local.type}:ReadCapacityUnits"
+  scalable_dimension = "${local.namespace}:${local.type}:${local.resource_name["read"]}"
 
   role_arn = "${data.aws_iam_role.dynamodb_autoscale_role.arn}"
 }
@@ -20,7 +20,7 @@ resource "aws_appautoscaling_policy" "dynamodb_read" {
   service_namespace  = "${aws_appautoscaling_target.dynamodb_read.service_namespace}"
   scalable_dimension = "${aws_appautoscaling_target.dynamodb_read.scalable_dimension}"
 
-  policy_type = "TargetTrackingScaling"
+  policy_type = "${local.policy_type}"
 
   target_tracking_scaling_policy_configuration {
     predefined_metric_specification {
