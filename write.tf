@@ -3,13 +3,16 @@
 resource "aws_appautoscaling_target" "dynamodb_write" {
   resource_id = local.resource_id
 
-  min_capacity = var.write_min
-  max_capacity = var.write_max
+  min_capacity = floor(var.write_min)
+  max_capacity = floor(var.write_max)
 
   service_namespace  = local.namespace
   scalable_dimension = "${local.namespace}:${local.type}:${local.resource_name["write"]}"
 
   role_arn = data.aws_iam_role.dynamodb_autoscale_role.arn
+  lifecycle {
+    ignore_changes = [max_capacity]
+  }
 }
 
 resource "aws_appautoscaling_policy" "dynamodb_write" {
